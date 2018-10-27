@@ -1,15 +1,19 @@
 
 var numSquares = 6;
-var colors = generateRandomColors(numSquares);
+var colors = [];
+var pickedColor;
 var squares = document.querySelectorAll(".square");
-var pickedColor = pickColor();
 var colorDisplay = document.getElementById("colorDisplay");
 var messageDisplay = document.querySelector("#message");
 var h1 = document.querySelector("h1");
 var resetButton = document.querySelector("#reset");
 var modeButtons = document.querySelectorAll(".mode");
 
-for(var i=0;i < modeButtons.length;i++)
+init();
+ 
+function init(){
+   // mode buttons event listeners
+   for(var i=0;i < modeButtons.length;i++)
    {
       modeButtons[i].addEventListener("click", function()
       {
@@ -21,6 +25,38 @@ for(var i=0;i < modeButtons.length;i++)
       reset();
       });
    }
+
+
+   for( var i = 0; i < squares.length; i++)
+{
+   //add initial colors to squares
+//   squares[i].style.backgroundColor = colors[i];
+
+   //add click listeners to squares
+   squares[i].addEventListener("click",function(){
+      //grab color of clicked square
+      var clickedColor = this.style.backgroundColor;
+      //compare color to pickedColor
+      if(clickedColor === pickedColor){
+         messageDisplay.textContent = "Correct";
+         resetButton.textContent = "Play Again?"
+         changeColors(clickedColor);
+         h1.style.backgroundColor = clickedColor;
+      }
+      else
+      {
+       this.style.backgroundColor = "#232323";
+       messageDisplay.textContent = "Try Again";
+      }
+
+   });
+
+   reset();
+
+  }
+}
+
+
 
 function reset(){
    colors = generateRandomColors(numSquares);
@@ -47,35 +83,7 @@ resetButton.addEventListener("click",function(){
 reset();
 })
 
-
-
-colorDisplay.textContent = pickedColor;
-
-for( var i = 0; i < squares.length; i++)
-{
-	//add initial colors to squares
-	squares[i].style.backgroundColor = colors[i];
-
-	//add click listeners to squares
-	squares[i].addEventListener("click",function(){
-      //grab color of clicked square
-      var clickedColor = this.style.backgroundColor;
-      //compare color to pickedColor
-      if(clickedColor === pickedColor){
-      	messageDisplay.textContent = "Correct";
-         resetButton.textContent = "Play Again?"
-         changeColors(clickedColor);
-         h1.style.backgroundColor = clickedColor;
-      }
-      else
-      {
-       this.style.backgroundColor = "#232323";
-       messageDisplay.textContent = "Try Again";
-      }
-
-	});
-
-}
+//colorDisplay.textContent = pickedColor;
 
 function changeColors(color)
 {
